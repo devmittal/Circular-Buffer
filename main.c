@@ -5,34 +5,24 @@
 
 int main()
 {
+	char response[50] = {};
+	char* arguments[10] = {};
+	char* arg = NULL;
+	unsigned char arg_counter = 0, arg_parser = 0;
 	ring_t *ring = NULL;
-	ring = init(10);
-	printf("\nRing = %p ..... Success\n",ring);
 
-	insert_data(ring,'a');
-	insert_data(ring,'b');
-	insert_data(ring,'c');
-	insert_data(ring,'d');
-	insert_data(ring,'e');
-	insert_data(ring,'z');
+	printf("\nEnter a Command :");
+	scanf("%s",response);
 	
-	insert_data(ring,'f');
-	insert_data(ring,'g');
-	insert_data(ring,'h');
-	insert_data(ring,'i');
-	insert_data(ring,'j');
-	insert_data(ring,'k');	
+	arg = strtok(response,"-");
+	while(arg != NULL)
+	{
+		arguments[arg_counter++] = arg;
+		arg = strtok(NULL,"-");
+	} 
 
-	insert_data(ring,'l');
-	insert_data(ring,'m');
-	insert_data(ring,'n');
-	insert_data(ring,'o');
-	insert_data(ring,'p');
-	insert_data(ring,'q');
-	
-	printf("\nData Entries : ");
-	entries(ring);
-	printf("\n");
+	for(arg_parser = 0 ; arg_parser < arg_counter ; arg_parser++)
+		printf("%s\n",arguments[arg_parser]);	
 
 	return 0;
 }
