@@ -4,13 +4,7 @@
 #include<stdlib.h>
 #include"ring.h"
 
-#define COMMAND_COUNT (4)
-
-typedef struct
-{
-	ring_t ring_data;
-	int int_data;
-} data_t;
+#define COMMAND_COUNT (5)
 
 typedef struct
 {
@@ -18,20 +12,36 @@ typedef struct
 	unsigned char arg_extraction_count;
 } command_t;
 
+void quit(void)
+{
+	exit(0);
+}
+
 int main()
 {
 	char response[50] = {};
-	command_t commands[COMMAND_COUNT] = {{"init",1}, {"insert",1}, {"remove",0}, {"entries",0}}; 
+	command_t commands[COMMAND_COUNT] = {{"init",1}, {"insert",1}, {"remove",0}, {"entries",0}, {"exit",0}}; 
 	char* arguments[10] = {};
 	char* arg = NULL;
 	unsigned char arg_counter = 0, arg_parser = 0, command_parser = 0;
+
 	ring_t *ring = NULL;
+	unsigned int buffer_length = 0;
+
+	printf("\nCircular Buffer");
+	printf("\n***************");
 
 	while(1)
 	{
 		arg_counter = 0;
 		
-		printf("\nEnter a Command :");
+		printf("\n\nInnitialize buffer - init <Buffer Size>");
+		printf("\nInsert data in buffer - insert <Character Data>");
+		printf("\nRemove first data from buffer - remove");
+		printf("\nDisplay data in buffer - entries");
+		printf("\nExit program - exit");
+
+		printf("\n\n>>");
 		fgets(response, sizeof response, stdin);
 		arg = strtok(response," \n");
 				
@@ -50,14 +60,30 @@ int main()
 				{
 					switch(command_parser)
 					{
-						case 0:	ring = init(atoi(arguments[arg_counter-1]));
-							printf("\nCircular Buffer Allocate %p\n",ring);
+						case 0:	if(ring == NULL)
+							{
+								buffer_length = atoi(arguments[arg_counter-1]);
+								if(buffer_length <= 255)
+								{
+									if((ring = init(buffer_length)) != NULL)
+										printf("\nCircular Buffer Allocate %p",ring);
+									else
+										printf("\nAllocation of buffer failed !");
+								}
+								else
+									printf("\nBuffer size cannot exceed 255 !");
+							}
+							else
+								printf("\nBuffer already initialized !");
 							break;
 
 						case 1:	insert_data(ring,*arguments[arg_counter-1]);
 							break;
 
 						case 3:	entries(ring);
+							break;
+
+						case 4:	quit();
 							break;
 							
 					}
