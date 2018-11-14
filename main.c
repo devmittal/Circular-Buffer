@@ -32,18 +32,15 @@ int main()
 		arg_counter = 0;
 		
 		printf("\nEnter a Command :");
-		//scanf("%s", response);		
 		fgets(response, sizeof response, stdin);
-		
-		arg = strtok(response," ");
+		arg = strtok(response," \n");
+				
 		while(arg != NULL)
 		{
 			arguments[arg_counter++] = arg;
 			arg = strtok(NULL," ");
 		} 
 
-		for(arg_parser = 0 ; arg_parser < arg_counter ; arg_parser++)
-			printf("%s\n",arguments[arg_parser]);
 
 		for(command_parser = 0 ;  command_parser < COMMAND_COUNT ; command_parser++)
 		{
@@ -67,7 +64,7 @@ int main()
 				}
 				else
 				{
-					printf("\nArguments Missing!\n");
+					printf("\nInvalid Arguments!\n");
 				}
 				break;
 			}
