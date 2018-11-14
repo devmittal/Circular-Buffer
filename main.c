@@ -32,13 +32,14 @@ int main()
 		arg_counter = 0;
 		
 		printf("\nEnter a Command :");
-		scanf("%s",response);
+		//scanf("%s", response);		
+		fgets(response, sizeof response, stdin);
 		
-		arg = strtok(response,"-");
+		arg = strtok(response," ");
 		while(arg != NULL)
 		{
 			arguments[arg_counter++] = arg;
-			arg = strtok(NULL,"-");
+			arg = strtok(NULL," ");
 		} 
 
 		for(arg_parser = 0 ; arg_parser < arg_counter ; arg_parser++)
@@ -46,7 +47,7 @@ int main()
 
 		for(command_parser = 0 ;  command_parser < COMMAND_COUNT ; command_parser++)
 		{
-			if(strcmp(response,commands[command_parser].command) == 0)
+			if(strcmp(arguments[0],commands[command_parser].command) == 0)
 			{
 				if((arg_counter - 1) == commands[command_parser].arg_extraction_count)
 				{

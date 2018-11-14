@@ -1,6 +1,7 @@
 #ifndef RING_H
 #define RING_H
 
+
 typedef struct
 {
 	char *Buffer;
