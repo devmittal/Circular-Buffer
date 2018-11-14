@@ -27,6 +27,7 @@ int main()
 
 	ring_t *ring = NULL;
 	unsigned int buffer_length = 0;
+	char deleted_data = 0;
 
 	printf("\nCircular Buffer");
 	printf("\n***************");

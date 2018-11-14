@@ -11,3 +11,6 @@ ring.o: ring.c ring.h
 clean:  
 	rm prog *.o
 
+test: prog testfile
+	./prog < testfile
+

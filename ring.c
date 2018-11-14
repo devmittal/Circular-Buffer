@@ -63,15 +63,24 @@ int remove_data(ring_t *ring, char *data)
 
 int entries(ring_t *ring)
 {
-	int i = 0;
+	int i = 0, j = 0;
 	
 	if(ring->Outi == -1)
 		return -1;
 
 	if(ring->Ini >= ring->Outi)
 	{
+		printf("\n-");
+		for(j = ring->Outi ; j < ring->Length ; j++)			
+				printf("----");
+		printf("\n|");
 		for(i = ring->Outi ; i < ring->Length ; i++)
-			printf("%c ",ring->Buffer[i]);	
+		{			
+			printf(" %c |",ring->Buffer[i]);	
+		}
+		printf("\n-");
+		for(j = ring->Outi ; j < ring->Length ; j++)			
+				printf("----");
 	}
 	else
 	{
