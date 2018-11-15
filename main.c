@@ -24,6 +24,7 @@ int main()
 	char* arguments[10] = {};
 	char* arg = NULL;
 	unsigned char arg_counter = 0, arg_parser = 0, command_parser = 0;
+	char pop_data;
 
 	ring_t *ring = NULL;
 	unsigned int buffer_length = 0;
@@ -78,10 +79,20 @@ int main()
 								printf("\nBuffer already initialized !");
 							break;
 
-						case 1:	insert_data(ring,*arguments[arg_counter-1]);
+						case 1:	if(insert_data(ring,*arguments[arg_counter-1]) == 1)
+								printf("\n%c inserted in buffer", *arguments[arg_counter-1]);
+							else
+								printf("\nBuffer is full. Could not insert data");
 							break;
 
-						case 3:	entries(ring);
+						case 2: if(remove_data(ring,&pop_data) == 1)
+								printf("\n%c removed from buffer", pop_data);
+							else
+								printf("\nBuffer is empty. Could not remove data");
+							break;
+
+						case 3:	if(entries(ring) == 0)
+								printf("\nBuffer is empty. Could not display data");
 							break;
 
 						case 4:	quit();

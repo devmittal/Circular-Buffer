@@ -2,92 +2,93 @@
 #include<stdlib.h>
 #include"ring.h"
 
+int flag = 0;
+
 ring_t* init(int length)
 {
 	ring_t *ring = malloc(length + sizeof(*ring));
 	ring->Length = length;
-	ring->Ini = -1;
-	ring->Outi = -1;
+	ring->Ini = 0;
+	ring->Outi = 0;
 	ring->Buffer = (char *)(ring + 1);
 	return ring;
 }
 
 int insert_data(ring_t *ring, char data)
 {
-	if(((ring->Outi == 0) && (ring->Ini == ring->Length-1)) || (ring->Ini == (ring->Outi - 1)))	//Limit Reached - Wrap Arround
+	
+	if((ring->Ini-ring->Outi) == ring->Length)
 	{
-		ring->Outi = 0;
-		ring->Ini = 0;
-		ring->Buffer[ring->Ini] = data;
+		return 0;
 	}
-	else if(ring->Outi == -1)
-	{
-		ring->Outi = 0;
-		ring->Ini = 0;
-		ring->Buffer[ring->Ini] = data;	//First Data
-	}
-	else if((ring->Ini == (ring->Length - 1)) && (ring->Outi != 0))
-	{
-		ring->Ini = 0;
-		ring->Buffer[ring->Ini] = data;
-	}
+
 	else
 	{
-		ring->Ini++;
-		ring->Buffer[ring->Ini] = data;
-	}
-	return 1;
+		ring->Buffer[ring->Ini++ % ring->Length] = data;	//First Data
+		return 1;
+	}		
 }
 
 int remove_data(ring_t *ring, char *data)
 {
-	if(ring->Outi == -1)
-	{
-		return -1;
-	}
-	
-	*data = ring->Buffer[ring->Outi];
-	ring->Buffer[ring->Outi] = 0;
-
 	if(ring->Outi == ring->Ini)
 	{
-		ring->Outi = -1;
-		ring->Ini = -1;
+		return 0;			
 	}
-	else if(ring->Outi == (ring->Length - 1))
-		ring->Outi = 0;
+	
 	else
-		ring->Outi++;
-	return 1;
+	{
+		*data = ring->Buffer[ring->Outi++ % ring->Length];	
+		return 1;
+	}	
 }
 
 int entries(ring_t *ring)
 {
 	int i = 0, j = 0;
-	
-	if(ring->Outi == -1)
-		return -1;
 
-	if(ring->Ini >= ring->Outi)
+	if(ring->Ini == ring->Outi)
+	{
+		return 0;
+	}
+
+	else if((ring->Ini % ring->Length) > (ring->Outi % ring->Length))
 	{
 		printf("\n-");
-		for(j = ring->Outi ; j < ring->Length ; j++)			
+		for(j = ring->Outi ; j < ring->Ini ; j++)			
 				printf("----");
 		printf("\n|");
-		for(i = ring->Outi ; i < ring->Length ; i++)
+		for(i = ring->Outi ; i < ring->Ini ; i++)
 		{			
-			printf(" %c |",ring->Buffer[i]);	
+			printf(" %c |",ring->Buffer[i%ring->Length]);	
 		}
 		printf("\n-");
-		for(j = ring->Outi ; j < ring->Length ; j++)			
+		for(j = ring->Outi ; j < ring->Ini ; j++)			
 				printf("----");
+		return 1;	
 	}
+
 	else
 	{
-		for(i = ring->Outi ; i < ring->Length ; i++)
-			printf("%c ",ring->Buffer[i]);
-
-		for(i = 0 ; i <= ring->Ini ; i++)
-			printf("%c ",ring->Buffer[i]);
+		printf("\n-");
+		for(j = 0 ; j < (ring->Ini % ring->Length) ; j++)			
+				printf("----");
+		for(j = (ring->Outi % ring->Length); j < ring->Length ; j++)			
+				printf("----");
+		printf("\n|");
+		for(i = 0 ; i < (ring->Ini % ring->Length) ; i++)
+		{			
+			printf(" %c |",ring->Buffer[i%ring->Length]);	
+		}
+		for(i = (ring->Outi % ring->Length); i < ring->Length  ; i++)
+		{			
+			printf(" %c |",ring->Buffer[i%ring->Length]);	
+		}
+		printf("\n-");
+		for(j = 0 ; j < (ring->Ini % ring->Length) ; j++)			
+				printf("----");
+		for(j = (ring->Outi % ring->Length); j < ring->Length ; j++)			
+				printf("----");
+		return 1;
 	}
 }
