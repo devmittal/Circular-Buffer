@@ -82,13 +82,13 @@ int main()
 						case 1:	if(insert_data(ring,*arguments[arg_counter-1]) == 1)
 								printf("\n%c inserted in buffer", *arguments[arg_counter-1]);
 							else
-								printf("\nBuffer is full. Could not insert data");
+								printf("\nBuffer is full. Could not insert %c", *arguments[arg_counter-1]);
 							break;
 
 						case 2: if(remove_data(ring,&pop_data) == 1)
 								printf("\n%c removed from buffer", pop_data);
 							else
-								printf("\nBuffer is empty. Could not remove data");
+								printf("\n\nBuffer is empty.");
 							break;
 
 						case 3:	if(entries(ring) == 0)
