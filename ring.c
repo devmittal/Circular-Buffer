@@ -33,6 +33,7 @@ int remove_data(ring_t *ring, char *data)
 {
 	if(ring->Outi == ring->Ini)
 	{
+		*data = 255;
 		return 0;			
 	}
 	

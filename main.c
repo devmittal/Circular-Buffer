@@ -4,7 +4,7 @@
 #include<stdlib.h>
 #include"ring.h"
 
-#define COMMAND_COUNT (5)
+#define COMMAND_COUNT (7)
 
 typedef struct
 {
@@ -20,14 +20,15 @@ void quit(void)
 int main()
 {
 	char response[50] = {};
-	command_t commands[COMMAND_COUNT] = {{"init",1}, {"insert",1}, {"remove",0}, {"entries",0}, {"exit",0}}; 
+	command_t commands[COMMAND_COUNT] = {{"create",1}, {"init",1}, {"select",1}, {"insert",1}, {"remove",0}, {"entries",0}, {"exit",0}}; 
 	char* arguments[10] = {};
 	char* arg = NULL;
 	unsigned char arg_counter = 0, arg_parser = 0, command_parser = 0;
 	char pop_data;
 
 	ring_t *ring = NULL;
-	unsigned int buffer_length = 0;
+	ring_t **ring_collector = NULL;
+	unsigned int buffer_length = 0, ring_tracker = 0, selected_ring = 0, ring_count = 0,present_ring = 0;
 	char deleted_data = 0;
 
 	printf("\nCircular Buffer");
@@ -36,8 +37,10 @@ int main()
 	while(1)
 	{
 		arg_counter = 0;
-		
-		printf("\n\nInnitialize buffer - init <Buffer Size>");
+
+		printf("\n\nCreate N buffers - create <No. of Buffers>");
+		printf("\nInnitialize buffer - init <Buffer Size>");
+		printf("\nSelect a buffer - select <#Buffer>");
 		printf("\nInsert data in buffer - insert <Character Data>");
 		printf("\nRemove first data from buffer - remove");
 		printf("\nDisplay data in buffer - entries");
@@ -62,40 +65,106 @@ int main()
 				{
 					switch(command_parser)
 					{
-						case 0:	if(ring == NULL)
+						case 0:	if(ring_collector == NULL)
 							{
-								buffer_length = atoi(arguments[arg_counter-1]);
-								if(buffer_length <= 255)
+								ring_count = (unsigned int)atoi(arguments[arg_counter-1]);
+								if((ring_collector = malloc(ring_count * sizeof(*ring))) != 0)
 								{
+									printf("\n%u Buffers successfully created !",ring_count);
+								}
+								else
+									printf("\nFailed to create %u buffers !",ring_count);
+							}
+							else
+								printf("\n%u Buffers have already been created !",ring_count);
+							break;
+
+						case 1:	if(ring_collector != NULL)
+							{
+								if(ring_count > ring_tracker)
+								{
+									buffer_length = atoi(arguments[arg_counter-1]);
 									if((ring = init(buffer_length)) != NULL)
-										printf("\nCircular Buffer Allocate %p",ring);
+									{
+										printf("\nCircular Buffer %u Allocate %p",ring_tracker,ring);
+										ring_collector[ring_tracker++] = ring;
+										ring = NULL;
+									}
 									else
 										printf("\nAllocation of buffer failed !");
 								}
 								else
-									printf("\nBuffer size cannot exceed 255 !");
+									printf("\nAll the circular buffers have been allocated!");
 							}
 							else
-								printf("\nBuffer already initialized !");
+								printf("\nNo circular buffers created!"); 
 							break;
 
-						case 1:	if(insert_data(ring,*arguments[arg_counter-1]) == 1)
-								printf("\n%c inserted in buffer", *arguments[arg_counter-1]);
+						case 2:	if(ring_tracker == 0)
+								printf("\nNo circular buffers innitialized !");
 							else
-								printf("\nBuffer is full. Could not insert %c", *arguments[arg_counter-1]);
+							{
+								selected_ring = atoi(arguments[arg_counter-1]);
+								if(selected_ring < ring_tracker)
+								{
+									present_ring = selected_ring;
+									ring = ring_collector[present_ring];
+									printf("\nBuffer %u selected",present_ring);
+								}
+								else
+								{
+									printf("\nSelection does not exist !");
+								}
+							}
 							break;
 
-						case 2: if(remove_data(ring,&pop_data) == 1)
-								printf("\n%c removed from buffer", pop_data);
+						case 3:	if(ring == NULL)
+							{
+								if(ring_collector == 0)
+									printf("\nNo circular buffers innitialized !");
+								else
+									printf("\nNo circular buffer selected !");
+							}
 							else
-								printf("\n\nBuffer is empty.");
+							{
+								if(insert_data(ring,*arguments[arg_counter-1]) == 1)
+									printf("\n%c inserted in buffer-%u", *arguments[arg_counter-1],present_ring);
+								else
+									printf("\nBuffer is full. Could not insert data");
+							}
 							break;
 
-						case 3:	if(entries(ring) == 0)
-								printf("\nBuffer is empty. Could not display data");
+						case 4: if(ring == NULL)
+							{
+								if(ring_collector == 0)
+									printf("\nNo circular buffers innitialized !");
+								else
+									printf("\nNo circular buffer selected !");
+							}
+							else
+							{
+								if(remove_data(ring,&pop_data) == 1)
+									printf("\n%c removed from buffer-%u", pop_data,present_ring);
+								else
+									printf("\nBuffer is empty. Could not remove data");
+							}
 							break;
 
-						case 4:	quit();
+						case 5:	if(ring == NULL)
+							{
+								if(ring_collector == 0)
+									printf("\nNo circular buffers innitialized !");
+								else
+									printf("\nNo circular buffer selected !");
+							}
+							else
+							{
+								if(entries(ring) == 0)
+									printf("\nBuffer-%u is empty. Could not display data",present_ring);
+							}
+							break;
+
+						case 6:	quit();
 							break;
 							
 					}
