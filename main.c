@@ -26,9 +26,7 @@ int main()
 	unsigned char arg_counter = 0, arg_parser = 0, command_parser = 0;
 	char pop_data;
 
-	ring_t *ring = NULL;
-	ring_t **ring_collector = NULL;
-	unsigned int buffer_length = 0, ring_tracker = 0, selected_ring = 0, ring_count = 0,present_ring = 0;
+	unsigned int buffer_length = 0, ring_tracker = 0, selected_ring = 0, ring_count = 0, present_ring = 0;
 	char deleted_data = 0;
 
 	printf("\nCircular Buffer");
@@ -68,7 +66,8 @@ int main()
 						case 0:	if(ring_collector == NULL)
 							{
 								ring_count = (unsigned int)atoi(arguments[arg_counter-1]);
-								if((ring_collector = malloc(ring_count * sizeof(*ring))) != 0)
+								ring_collector = create_buffers(ring_count);
+								if(ring_collector != 0)
 								{
 									printf("\n%u Buffers successfully created !",ring_count);
 								}
@@ -84,10 +83,10 @@ int main()
 								if(ring_count > ring_tracker)
 								{
 									buffer_length = atoi(arguments[arg_counter-1]);
-									if((ring = init(buffer_length)) != NULL)
+									if(init(buffer_length, ring_tracker) == 1)
 									{
 										printf("\nCircular Buffer %u Allocate %p",ring_tracker,ring);
-										ring_collector[ring_tracker++] = ring;
+										ring_tracker += 1;
 										ring = NULL;
 									}
 									else
@@ -108,12 +107,11 @@ int main()
 								if(selected_ring < ring_tracker)
 								{
 									present_ring = selected_ring;
-									ring = ring_collector[present_ring];
-									printf("\nBuffer %u selected",present_ring);
+									select_buffer(present_ring);
 								}
 								else
 								{
-									printf("\nSelection does not exist !");
+									printf("\nSelection does not exist! Previous selected buffer active!");
 								}
 							}
 							break;
