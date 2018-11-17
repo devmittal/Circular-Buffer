@@ -10,27 +10,33 @@ ring_t** create_buffers(unsigned int ring_count)
 	return ring_collector;
 }
 
-int init(int length, unsigned int ring_tracker)
+int init(int length, unsigned int ring_tracker, unsigned int ring_count)
 {
-	if((ring = malloc(length + sizeof(*ring))) != NULL)
+	if(ring_count > ring_tracker)
 	{
-		free(ring_collector[ring_tracker]);
-		ring_collector[ring_tracker] = ring;
-		ring->Length = length;
-		ring->Ini = 0;
-		ring->Outi = 0;
-		ring->Buffer = (char *)(ring + 1);
-		return 1;
+		if((ring = malloc(length + sizeof(*ring))) != NULL)
+		{
+			printf("\nCircular Buffer %u Allocate %p",ring_tracker,ring);
+			free(ring_collector[ring_tracker]);
+			ring_collector[ring_tracker] = ring;
+			ring->Length = length;
+			ring->Ini = 0;
+			ring->Outi = 0;
+			ring->Buffer = (char *)(ring + 1);
+			ring = NULL;
+			return 1;
+		}
+		else
+			return 0;
 	}
 	else
-		return 0;
+		return -1;
 }
 
-int select_buffer(unsigned int present_ring)
+void select_buffer(unsigned int present_ring)
 {
 	ring = ring_collector[present_ring];
 	printf("\nBuffer %u selected",present_ring);
-	return 1;
 }
 
 int insert_data(ring_t *ring, char data)

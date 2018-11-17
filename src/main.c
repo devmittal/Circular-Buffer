@@ -28,6 +28,7 @@ int main()
 
 	unsigned int buffer_length = 0, ring_tracker = 0, selected_ring = 0, ring_count = 0, present_ring = 0;
 	char deleted_data = 0;
+	int init_status; 
 
 	printf("\nCircular Buffer");
 	printf("\n***************");
@@ -80,18 +81,12 @@ int main()
 
 						case 1:	if(ring_collector != NULL)
 							{
-								if(ring_count > ring_tracker)
-								{
-									buffer_length = atoi(arguments[arg_counter-1]);
-									if(init(buffer_length, ring_tracker) == 1)
-									{
-										printf("\nCircular Buffer %u Allocate %p",ring_tracker,ring);
-										ring_tracker += 1;
-										ring = NULL;
-									}
-									else
-										printf("\nAllocation of buffer failed !");
-								}
+								buffer_length = atoi(arguments[arg_counter-1]);
+								init_status = init(buffer_length, ring_tracker, ring_count);
+								if(init_status == 1)
+									ring_tracker += 1;
+								else if(init_status == 0)
+									printf("\nAllocation of buffer failed !");
 								else
 									printf("\nAll the circular buffers have been allocated!");
 							}

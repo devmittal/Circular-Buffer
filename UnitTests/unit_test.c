@@ -4,16 +4,6 @@
 
 #include "../inc/ring.h"
 
-/*int init(void)
-{
-	create_buffers(3);
-	init(3,0);
-	init(5,1);
-	init(10,2);
-	select_buffer(0);
-	return 0;
-}*/
-
 void test_create_buffer(void)
 {
 	CU_ASSERT_PTR_NOT_NULL(create_buffers(3));
@@ -22,14 +12,16 @@ void test_create_buffer(void)
 
 void test_init_buffer(void)
 {
-	CU_ASSERT_EQUAL(init(3,0), 1);
-	CU_ASSERT_EQUAL(ring->Length, 3);
-	CU_ASSERT_PTR_NOT_NULL(ring);
+	CU_ASSERT_EQUAL(init(3,0,3), 1);
+
+	CU_ASSERT_PTR_NULL(ring);
+
+	CU_ASSERT_EQUAL(init(5,4,3), -1);
 }
 
 void test_select_buffer(void)
 {
-	CU_ASSERT_EQUAL(select_buffer(0), 1);
+	select_buffer(0);
 	CU_ASSERT_PTR_NOT_NULL(ring);
 }
 
