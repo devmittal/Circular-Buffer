@@ -4,14 +4,32 @@
 
 int flag = 0;
 
-ring_t* init(int length)
+ring_t** create_buffers(unsigned int ring_count)
 {
-	ring_t *ring = malloc(length + sizeof(*ring));
-	ring->Length = length;
-	ring->Ini = 0;
-	ring->Outi = 0;
-	ring->Buffer = (char *)(ring + 1);
-	return ring;
+	ring_collector = malloc(ring_count * sizeof(*ring));
+	return ring_collector;
+}
+
+int init(int length, unsigned int ring_tracker)
+{
+	if((ring = malloc(length + sizeof(*ring))) != NULL)
+	{
+		free(ring_collector[ring_tracker]);
+		ring_collector[ring_tracker] = ring;
+		ring->Length = length;
+		ring->Ini = 0;
+		ring->Outi = 0;
+		ring->Buffer = (char *)(ring + 1);
+		return 1;
+	}
+	else
+		return 0;
+}
+
+void select_buffer(unsigned int present_ring)
+{
+	ring = ring_collector[present_ring];
+	printf("\nBuffer %u selected",present_ring);
 }
 
 int insert_data(ring_t *ring, char data)
