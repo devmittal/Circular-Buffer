@@ -26,10 +26,11 @@ int init(int length, unsigned int ring_tracker)
 		return 0;
 }
 
-void select_buffer(unsigned int present_ring)
+int select_buffer(unsigned int present_ring)
 {
 	ring = ring_collector[present_ring];
 	printf("\nBuffer %u selected",present_ring);
+	return 1;
 }
 
 int insert_data(ring_t *ring, char data)
@@ -42,7 +43,7 @@ int insert_data(ring_t *ring, char data)
 
 	else
 	{
-		ring->Buffer[ring->Ini++ % ring->Length] = data;	//First Data
+		ring->Buffer[ring->Ini++ % ring->Length] = data;	
 		return 1;
 	}		
 }
