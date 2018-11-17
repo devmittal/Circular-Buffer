@@ -87,5 +87,8 @@ int main()
 	if(CUE_SUCCESS != CU_basic_run_tests())
 		return CU_get_error();
 
+	CU_set_output_filename("CircularBuffer");
+	CU_automated_run_tests();
+
 	CU_cleanup_registry();
 }

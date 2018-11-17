@@ -12,4 +12,4 @@ ring.o: ring.c ring.h
 	cc -c ../src/ring.c
 
 clean:
-	rm unittest *.o
+	rm unittest *.o *.xml
