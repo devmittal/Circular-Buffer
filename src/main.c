@@ -41,8 +41,10 @@ int main()
 		printf("\nInnitialize buffer - init <Buffer Size>");
 		printf("\nSelect a buffer - select <#Buffer>");
 		printf("\nInsert data in buffer - insert <Character Data>");
+		printf("\nBurst Insert data in buffer - burst insert");
 		printf("\nRemove first data from buffer - remove");
 		printf("\nDisplay data in buffer - entries");
+		printf("\nResize buffer - resize");
 		printf("\nGenerate Report - report");
 		printf("\nExit program - exit");
 

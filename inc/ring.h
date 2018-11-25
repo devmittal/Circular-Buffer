@@ -10,12 +10,6 @@ typedef struct
 	int Outi;	//front
 } ring_t;
 
-typedef struct
-{
-	char c;
-	unsigned int count;
-} char_tracker;
-
 ring_t *ring;
 ring_t **ring_collector;
 
@@ -25,6 +19,7 @@ void select_buffer(unsigned int present_ring);
 int insert_data(ring_t *ring, char data);
 int remove_data(ring_t *ring, char *data);
 int entries(ring_t *ring);
+void report(unsigned int ring_count);
 
 #endif
 

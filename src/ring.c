@@ -123,9 +123,8 @@ int entries(ring_t *ring)
 
 void report(unsigned int ring_count)
 {
-	unsigned int ring_parser = 0, character_parser = 0, buffer_parser = 0, occurance_counter = 0, c_counter = 0;
-	ring_t *temp_ring = 0;
-	char_tracker c_collector[256];	
+	unsigned int ring_parser = 0, character_parser = 0, buffer_parser = 0, occurance_counter = 0;
+	ring_t *temp_ring = 0;	
 	
 	for(character_parser = 0 ; character_parser < 256 ; character_parser++)
 	{
