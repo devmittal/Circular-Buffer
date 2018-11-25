@@ -10,6 +10,12 @@ typedef struct
 	int Outi;	//front
 } ring_t;
 
+typedef struct
+{
+	char c;
+	unsigned int count;
+} char_tracker;
+
 ring_t *ring;
 ring_t **ring_collector;
 
