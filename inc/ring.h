@@ -19,6 +19,7 @@ void select_buffer(unsigned int present_ring);
 int insert_data(ring_t *ring, char data);
 int remove_data(ring_t *ring, char *data);
 int entries(ring_t *ring);
+void resize(int length, unsigned int ring_tracker, unsigned int ring_count);
 void report(unsigned int ring_count);
 
 #endif

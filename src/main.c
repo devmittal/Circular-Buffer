@@ -4,7 +4,7 @@
 #include<stdlib.h>
 #include"../inc/ring.h"
 
-#define COMMAND_COUNT (8)
+#define COMMAND_COUNT (9)
 
 typedef struct
 {
@@ -20,7 +20,7 @@ void quit(void)
 int main()
 {
 	char response[50] = {};
-	command_t commands[COMMAND_COUNT] = {{"create",1}, {"init",1}, {"select",1}, {"insert",1}, {"remove",0}, {"entries",0}, {"report",0}, {"exit",0}}; 
+	command_t commands[COMMAND_COUNT] = {{"create",1}, {"init",1}, {"select",1}, {"insert",1}, {"remove",0}, {"entries",0}, {"resize",1}, {"report",0}, {"exit",0}}; 
 	char* arguments[10] = {};
 	char* arg = NULL;
 	unsigned char arg_counter = 0, arg_parser = 0, command_parser = 0;
@@ -44,7 +44,7 @@ int main()
 		printf("\nBurst Insert data in buffer - burst insert");
 		printf("\nRemove first data from buffer - remove");
 		printf("\nDisplay data in buffer - entries");
-		printf("\nResize buffer - resize");
+		printf("\nResize buffer - resize <#Buffer>");
 		printf("\nGenerate Report - report");
 		printf("\nExit program - exit");
 
@@ -160,10 +160,13 @@ int main()
 							}
 							break;
 
-						case 6:	report(ring_count);
+						case 6:	resize(17,0,ring_count);
 							break;
 
-						case 7:	quit();
+						case 7:	report(ring_count);
+							break;
+
+						case 8:	quit();
 							break;
 							
 					}

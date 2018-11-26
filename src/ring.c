@@ -121,6 +121,32 @@ int entries(ring_t *ring)
 	}
 }
 
+void resize(int length, unsigned int ring_tracker, unsigned int ring_count)
+{
+	ring_t *temp_ring = ring_collector[ring_tracker];
+	int i = 0, count = 0;
+	int *data = (int*)malloc(length * sizeof(int));
+	char c = 0;
+
+	for(i = 0 ; i < length ; i++)
+	{
+		if(remove_data(temp_ring,&c))
+		{
+			data[i] = c;
+			count++;
+		}
+		else
+			break;
+	}
+	init(length,ring_tracker,ring_count);
+	temp_ring = ring_collector[ring_tracker];
+	for(i = 0 ; i < count; i++)
+	{
+		insert_data(temp_ring,data[i]);
+	}
+	free(data);		
+}
+
 void report(unsigned int ring_count)
 {
 	unsigned int ring_parser = 0, character_parser = 0, buffer_parser = 0, occurance_counter = 0;
