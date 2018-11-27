@@ -139,10 +139,10 @@ void resize(int length, unsigned int ring_tracker, unsigned int ring_count)
 			break;
 	}
 	init(length,ring_tracker,ring_count);
-	temp_ring = ring_collector[ring_tracker];
+	ring = ring_collector[ring_tracker];
 	for(i = 0 ; i < count; i++)
 	{
-		insert_data(temp_ring,data[i]);
+		insert_data(ring,data[i]);
 	}
 	free(data);		
 }

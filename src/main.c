@@ -142,7 +142,7 @@ int main()
 								if(remove_data(ring,&pop_data) == 1)
 									printf("\n%c removed from buffer-%u", pop_data,present_ring);
 								else
-									printf("\nBuffer is empty. Could not remove data");
+									printf("\nBuffer is empty.");
 							}
 							break;
 
@@ -160,7 +160,17 @@ int main()
 							}
 							break;
 
-						case 6:	resize(17,0,ring_count);
+						case 6:	if(ring == NULL)
+							{
+								if(ring_collector == 0)
+									printf("\nNo circular buffers innitialized !");
+								else
+									printf("\nNo circular buffer selected !");
+							}
+							else
+							{
+								resize(atoi(arguments[arg_counter-1]),present_ring,ring_count);
+							}
 							break;
 
 						case 7:	report(ring_count);
