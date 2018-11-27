@@ -1,6 +1,7 @@
 #ifndef RING_H
 #define RING_H
 
+#define COMMAND_COUNT (8)
 
 typedef struct
 {
