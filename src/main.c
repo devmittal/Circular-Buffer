@@ -3,7 +3,7 @@
 ​ * ​ ​ @brief​ ​ The main function of this program which contains the user menu,
  *	     function calls for each function and bound checking. 
  *   @Tools_Used GCC
-​ * ​ ​ @author​  Devansh Mittal, ​​Souvik De
+​ * ​ ​ @author​  ​​Souvik De, Devansh Mittal
 ​ * ​ ​ @date​ ​ November 27th, 2018
 ​ * ​ ​ @version​ ​ 1.0
 *****************************************************************************/
@@ -21,6 +21,7 @@ typedef struct
 	unsigned char arg_extraction_count; //Stores number of arguments with that command
 } command_t;
 
+/* Function to Exit Menu */
 void quit(void)
 {
 	exit(0);
@@ -54,7 +55,7 @@ int main()
 		printf("\nInsert data in buffer - insert <Character Data>");
 		printf("\nRemove first data from buffer - remove");
 		printf("\nDisplay data in buffer - entries");
-		printf("\nResize buffer - resize <#Buffer>");
+		printf("\nResize buffer - resize <Resize Length for selected Buffer>");
 		printf("\nExit program - exit");
 
 		printf("\n\n>>");
