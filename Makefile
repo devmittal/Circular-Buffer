@@ -1,4 +1,6 @@
+#define LINUX
 
+#ifdef LINUX
 vpath %.c src
 vpath %.h inc
 
@@ -16,4 +18,4 @@ clean:
 
 test: prog testfile
 	./prog < testfile
-
+#endif
